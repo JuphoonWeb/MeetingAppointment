@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meeting.mapper.EquipmentMapper">
+  <resultMap id="BaseResultMap" type="com.meeting.model.Equipment">
+    <constructor>
+      <idArg column="equipment_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="equipment_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="equipment_belongs" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="equipment_storage_time" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="equipment_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="equipment_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    equipment_id, equipment_name, equipment_belongs, equipment_storage_time, equipment_type, 
+    equipment_status
+  </sql>
+  <select id="selectByExample" parameterType="com.meeting.model.EquipmentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from equipment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from equipment
+    where equipment_id = #{equipmentId,jdbcType=INTEGER}
+  </select>
+
+
+
+  <select id="selectByNameAndTypeAndBelongs"  resultMap="BaseResultMap">
+
+
+    select * from equipment
+    <where>
+      <if test="name!=null and name!=''">
+        equipment_name = #{name}
+      </if>
+
+      <if test="type!=null and type!=''">
+        and  equipment_type=#{type}
+      </if>
+
+      <if test="belongs!=null and belongs!=''">
+        and  equipment_belongs=#{belongs}
+      </if>
+    </where>
+
+  </select>
+
+
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from equipment
+    where equipment_id = #{equipmentId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.meeting.model.EquipmentExample">
+    delete from equipment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.meeting.model.Equipment">
+    insert into equipment (equipment_id, equipment_name, equipment_belongs, 
+      equipment_storage_time, equipment_type, equipment_status
+      )
+    values (#{equipmentId,jdbcType=INTEGER}, #{equipmentName,jdbcType=VARCHAR}, #{equipmentBelongs,jdbcType=INTEGER}, 
+      #{equipmentStorageTime,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR}, #{equipmentStatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.meeting.model.Equipment">
+    insert into equipment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="equipmentId != null">
+        equipment_id,
+      </if>
+      <if test="equipmentName != null">
+        equipment_name,
+      </if>
+      <if test="equipmentBelongs != null">
+        equipment_belongs,
+      </if>
+      <if test="equipmentStorageTime != null">
+        equipment_storage_time,
+      </if>
+      <if test="equipmentType != null">
+        equipment_type,
+      </if>
+      <if test="equipmentStatus != null">
+        equipment_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="equipmentId != null">
+        #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentName != null">
+        #{equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentBelongs != null">
+        #{equipmentBelongs,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentStorageTime != null">
+        #{equipmentStorageTime,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentType != null">
+        #{equipmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentStatus != null">
+        #{equipmentStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.meeting.model.EquipmentExample" resultType="java.lang.Integer">
+    select count(*) from equipment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update equipment
+    <set>
+      <if test="record.equipmentId != null">
+        equipment_id = #{record.equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.equipmentName != null">
+        equipment_name = #{record.equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.equipmentBelongs != null">
+        equipment_belongs = #{record.equipmentBelongs,jdbcType=INTEGER},
+      </if>
+      <if test="record.equipmentStorageTime != null">
+        equipment_storage_time = #{record.equipmentStorageTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.equipmentType != null">
+        equipment_type = #{record.equipmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.equipmentStatus != null">
+        equipment_status = #{record.equipmentStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update equipment
+    set equipment_id = #{record.equipmentId,jdbcType=INTEGER},
+      equipment_name = #{record.equipmentName,jdbcType=VARCHAR},
+      equipment_belongs = #{record.equipmentBelongs,jdbcType=INTEGER},
+      equipment_storage_time = #{record.equipmentStorageTime,jdbcType=VARCHAR},
+      equipment_type = #{record.equipmentType,jdbcType=VARCHAR},
+      equipment_status = #{record.equipmentStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meeting.model.Equipment">
+    update equipment
+    <set>
+      <if test="equipmentName != null">
+        equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentBelongs != null">
+        equipment_belongs = #{equipmentBelongs,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentStorageTime != null">
+        equipment_storage_time = #{equipmentStorageTime,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentType != null">
+        equipment_type = #{equipmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentStatus != null">
+        equipment_status = #{equipmentStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where equipment_id = #{equipmentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meeting.model.Equipment">
+    update equipment
+    set equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      equipment_belongs = #{equipmentBelongs,jdbcType=INTEGER},
+      equipment_storage_time = #{equipmentStorageTime,jdbcType=VARCHAR},
+      equipment_type = #{equipmentType,jdbcType=VARCHAR},
+      equipment_status = #{equipmentStatus,jdbcType=VARCHAR}
+    where equipment_id = #{equipmentId,jdbcType=INTEGER}
+  </update>
+</mapper>

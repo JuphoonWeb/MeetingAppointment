@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meeting.mapper.MeetingRoomMessageMapper">
+  <resultMap id="BaseResultMap" type="com.meeting.model.MeetingRoomMessage">
+    <constructor>
+      <idArg column="room_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="room_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="room_place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="room_content_number" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="room_principal" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="room_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    room_id, room_name, room_place, room_content_number, room_principal, room_status
+  </sql>
+  <select id="selectByExample" parameterType="com.meeting.model.MeetingRoomMessageExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from room_message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from room_message
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </select>
+
+
+
+  <select id="selectByMeetingRoomName" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+
+    select * from room_message
+    <where>
+      <if test="_parameter!=null and _parameter!=''">
+
+        room_name= #{roomName}
+
+      </if>
+
+    </where>
+
+  </select>
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from room_message
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.meeting.model.MeetingRoomMessageExample">
+    delete from room_message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.meeting.model.MeetingRoomMessage">
+    insert into room_message (room_id, room_name, room_place, 
+      room_content_number, room_principal, room_status
+      )
+    values (#{roomId,jdbcType=INTEGER}, #{roomName,jdbcType=VARCHAR}, #{roomPlace,jdbcType=VARCHAR}, 
+      #{roomContentNumber,jdbcType=INTEGER}, #{roomPrincipal,jdbcType=VARCHAR}, #{roomStatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.meeting.model.MeetingRoomMessage">
+    insert into room_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roomId != null">
+        room_id,
+      </if>
+      <if test="roomName != null">
+        room_name,
+      </if>
+      <if test="roomPlace != null">
+        room_place,
+      </if>
+      <if test="roomContentNumber != null">
+        room_content_number,
+      </if>
+      <if test="roomPrincipal != null">
+        room_principal,
+      </if>
+      <if test="roomStatus != null">
+        room_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roomId != null">
+        #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="roomName != null">
+        #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="roomPlace != null">
+        #{roomPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="roomContentNumber != null">
+        #{roomContentNumber,jdbcType=INTEGER},
+      </if>
+      <if test="roomPrincipal != null">
+        #{roomPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="roomStatus != null">
+        #{roomStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.meeting.model.MeetingRoomMessageExample" resultType="java.lang.Integer">
+    select count(*) from room_message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update room_message
+    <set>
+      <if test="record.roomId != null">
+        room_id = #{record.roomId,jdbcType=INTEGER},
+      </if>
+      <if test="record.roomName != null">
+        room_name = #{record.roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomPlace != null">
+        room_place = #{record.roomPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomContentNumber != null">
+        room_content_number = #{record.roomContentNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.roomPrincipal != null">
+        room_principal = #{record.roomPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomStatus != null">
+        room_status = #{record.roomStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update room_message
+    set room_id = #{record.roomId,jdbcType=INTEGER},
+      room_name = #{record.roomName,jdbcType=VARCHAR},
+      room_place = #{record.roomPlace,jdbcType=VARCHAR},
+      room_content_number = #{record.roomContentNumber,jdbcType=INTEGER},
+      room_principal = #{record.roomPrincipal,jdbcType=VARCHAR},
+      room_status = #{record.roomStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meeting.model.MeetingRoomMessage">
+    update room_message
+    <set>
+      <if test="roomName != null">
+        room_name = #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="roomPlace != null">
+        room_place = #{roomPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="roomContentNumber != null">
+        room_content_number = #{roomContentNumber,jdbcType=INTEGER},
+      </if>
+      <if test="roomPrincipal != null">
+        room_principal = #{roomPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="roomStatus != null">
+        room_status = #{roomStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meeting.model.MeetingRoomMessage">
+    update room_message
+    set room_name = #{roomName,jdbcType=VARCHAR},
+      room_place = #{roomPlace,jdbcType=VARCHAR},
+      room_content_number = #{roomContentNumber,jdbcType=INTEGER},
+      room_principal = #{roomPrincipal,jdbcType=VARCHAR},
+      room_status = #{roomStatus,jdbcType=VARCHAR}
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </update>
+</mapper>
